@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "discord-to-authentik"
-version = "0.1.1"
+version = "0.1.2"
 description = "Synchronize roles you create in Discord to authentik for Discord Auth managment"
 authors = ["Dominik Rathmer <dominik@rathmer.me>"]
 license = "GPLv3"
