@@ -1,4 +1,4 @@
-{
+self: {
   config,
   lib,
   pkgs,
@@ -27,6 +27,12 @@ in {
     discord-to-authentik = {
       enable = mkEnableOption "discord-to-authentik";
 
+      package = mkOption {
+        type = types.package;
+        default = self.packages.${pkgs.system}.default;
+        description = "The discord-to-authentik package";
+      };
+
       environmentFile = mkOption {
         type = types.path;
         example = "/run/secrets/discord-to-authentik/discord-to-authentik-env";
@@ -38,16 +44,16 @@ in {
             # required content
             DISCORD_OWNER_ID=<your discord user id>
             DISCORD_BOT_TOKEN=<your discord bot token>
-            AUTHENTIK_HOST=<your authenti host>
-            AUTHENTIK_TOKEN=<your authenti token>
+            AUTHENTIK_HOST=<your authentik host>
+            AUTHENTIK_TOKEN=<your authentik token>
           ```
         '';
       };
     };
   };
 
-  config = {
-    systemd.services.discord-to-authentik = mkIf config.services.discord-to-authentik.enable {
+  config = mkIf cfg.enable {
+    systemd.services.discord-to-authentik = {
       description = "A Discord bot that synchronizes your discord roles to authentik groups";
       after = ["network.target"];
       wants = ["network-online.target"];
@@ -55,9 +61,7 @@ in {
       serviceConfig = {
         Type = "simple";
         Restart = "always";
-        ExecStart = ''
-          ${pkgs.discord-to-authentik}/bin/discord-to-authentik
-        '';
+        ExecStart = lib.getExe cfg.package;
         EnvironmentFile = config.services.discord-to-authentik.environmentFile;
       };
 
