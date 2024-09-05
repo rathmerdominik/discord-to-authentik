@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "discord-to-authentik"
+version = "0.1.0"
+description = "Synchronize roles you create in Discord to Authentik for Discord Auth managment"
+authors = ["Dominik Rathmer <dominik@rathmer.me>"]
+license = "GPLv3"
+readme = "README.md"
+packages = [{include = "discord_to_authentik"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+authentik-client = "^2024.8.0.post1725367375"
+"discord.py" = "^2.4.0"
+python-dotenv = "^1.0.1"
+click = "^8.1.7"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.11.2"
+black = "^24.8.0"
+flake8 = "^7.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+discord-to-authentik = "discord_to_authentik.main:main"
+discord-to-authentik-setup = "discord_to_authentik.setup:main"
