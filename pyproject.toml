@@ -1,11 +1,14 @@
 [tool.poetry]
 name = "discord-to-authentik"
-version = "0.1.0"
-description = "Synchronize roles you create in Discord to Authentik for Discord Auth managment"
+version = "0.1.1"
+description = "Synchronize roles you create in Discord to authentik for Discord Auth managment"
 authors = ["Dominik Rathmer <dominik@rathmer.me>"]
 license = "GPLv3"
 readme = "README.md"
 packages = [{include = "discord_to_authentik"}]
+homepage = "https://pypi.org/project/discord-to-authentik/"
+repository = "https://github.com/rathmerdominik/discord-to-authentik"
+
 
 [tool.poetry.dependencies]
 python = "^3.12"

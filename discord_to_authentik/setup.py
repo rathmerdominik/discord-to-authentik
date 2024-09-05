@@ -14,9 +14,8 @@ if euid != 0:
 def generate_service_file(
     hostname: str, token: str, owner_id: int, bot_token: str
 ) -> str:
-    return f"""
-[Unit]
-Description=A Discord bot that synchronizes your discord roles to Authentik groups
+    return f"""[Unit]
+Description=A Discord bot that synchronizes your discord roles to authentik groups
 After=network.target
 Wants=network-online.target
 
@@ -32,18 +31,18 @@ Environment=AUTHENTIK_TOKEN={token}
 
 [Install]
 WantedBy=multi-user.target
-    """
+"""
 
 
 def main():
-    click.echo("| ---- Welcome to Discord to Authentik ---- |")
+    click.echo("| ---- Welcome to Discord to authentik ---- |")
     click.echo("This script will help you to create a service file for the bot.")
 
     hostname: str
     while True:
         hostname = (
             click.prompt(
-                "Enter the basename of your Authentik instance e.g https://auth.example.com",
+                "Enter the basename of your authentik instance e.g https://auth.example.com",
                 type=str,
             )
             + "/api/v3"
@@ -52,8 +51,8 @@ def main():
             break
 
     while True:
-        token = click.prompt("Enter your Authentik token", type=str)
-        if click.confirm(f'The Authentik token will be "{token}". Is that correct?'):
+        token = click.prompt("Enter your authentik token", type=str)
+        if click.confirm(f'The authentik token will be "{token}". Is that correct?'):
             break
 
     while True:
