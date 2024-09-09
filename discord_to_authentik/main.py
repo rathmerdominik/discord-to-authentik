@@ -1,5 +1,6 @@
 import logging
 import os
+from typing import List
 
 import authentik_client
 import authentik_client.api_client
@@ -94,6 +95,16 @@ class MainCog(commands.Cog):
             pk=found_user[0].pk,
         )
 
+        self._sync_roles(core_api, after, found_user, user_account_request)
+        self._remove_roles(core_api, after, before.roles, user_account_request)
+
+    def _sync_roles(
+        self,
+        core_api: authentik_client.CoreApi,
+        after: discord.Member,
+        found_user: List[authentik_client.models.User],
+        user_account_request: authentik_client.models.UserAccountRequest,
+    ):
         for role in after.roles:
             if role.is_bot_managed():
                 continue
@@ -126,8 +137,15 @@ class MainCog(commands.Cog):
                 LOGGER.error(f"Error adding user to group: {e}")
                 continue
 
+    def _remove_roles(
+        self,
+        core_api: authentik_client.CoreApi,
+        after: discord.Member,
+        before_roles: List[discord.Role],
+        user_account_request: authentik_client.models.UserAccountRequest,
+    ):
         for group in core_api.core_groups_list().results:
-            removed_roles = list(set(before.roles) - set(after.roles))
+            removed_roles = list(set(before_roles) - set(after.roles))
             if group.name not in [role.name for role in removed_roles]:
                 continue
 
