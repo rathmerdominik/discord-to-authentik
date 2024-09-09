@@ -33,6 +33,12 @@ in {
         description = "The discord-to-authentik package";
       };
 
+      autoSyncRoles = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Automatically sync roles from users";
+      };
+
       environmentFile = mkOption {
         type = types.path;
         example = "/run/secrets/discord-to-authentik/discord-to-authentik-env";
@@ -63,6 +69,9 @@ in {
         Restart = "always";
         ExecStart = lib.getExe cfg.package;
         EnvironmentFile = config.services.discord-to-authentik.environmentFile;
+        Environment = mkIf cfg.autoSyncRoles {
+          DISCORD_AUTO_SYNC_ROLES = "true";
+        };
       };
 
       wantedBy = ["multi-user.target"];
