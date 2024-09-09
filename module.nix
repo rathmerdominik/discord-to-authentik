@@ -69,9 +69,7 @@ in {
         Restart = "always";
         ExecStart = lib.getExe cfg.package;
         EnvironmentFile = config.services.discord-to-authentik.environmentFile;
-        Environment = mkIf cfg.autoSyncRoles {
-          DISCORD_AUTO_SYNC_ROLES = "true";
-        };
+        Environment = mkIf cfg.autoSyncRoles "DISCORD_AUTO_SYNC_ROLES=true";
       };
 
       wantedBy = ["multi-user.target"];
